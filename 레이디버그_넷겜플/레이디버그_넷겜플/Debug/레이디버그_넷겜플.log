@@ -1,0 +1,29 @@
+﻿  소스.cpp
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(48): warning C4005: 'DEBUG': 매크로 재정의
+  c:\program files (x86)\vc\atlmfc\include\atldef.h(148): note: 'DEBUG'의 이전 정의를 참조하십시오.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(115): warning C4091: 'typedef ': 변수를 선언하지 않으면 'Move' 왼쪽은 무시됩니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(676): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(677): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(683): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(685): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(687): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(689): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(691): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(699): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(709): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(715): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(725): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(728): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(734): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(737): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(745): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(752): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(758): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(768): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(773): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(598): warning C4101: 'hPen' :참조되지 않은 지역 변수입니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(598): warning C4101: 'oldPen' :참조되지 않은 지역 변수입니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(1048): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\레이디버그_넷겜플\레이디버그_넷겜플\소스.cpp(1377): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  레이디버그_넷겜플.vcxproj -> C:\Users\jmj62\Documents\GitHub\NGP_LADYBUG\레이디버그_넷겜플\Debug\레이디버그_넷겜플.exe
+  레이디버그_넷겜플.vcxproj -> C:\Users\jmj62\Documents\GitHub\NGP_LADYBUG\레이디버그_넷겜플\Debug\레이디버그_넷겜플.pdb (Full PDB)
