@@ -93,7 +93,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 }
 
 typedef struct Move {
-	//int state;
 
 	float x;
 	float y;
@@ -108,7 +107,7 @@ typedef struct Move {
 	int y_move;
 	int x_move;
 
-	int count = 0;
+	//int count = 0;
 	int state = 0;
 
 	int collisionWithWho = 0;
@@ -404,7 +403,24 @@ void ITEM10(Move &player, Move &item_10, int i)
 static int interrupt_ITEM2_Flag = 0;
 static int interrupt_ITEM2_timer = 0;
 static float interrupt_ITEM2_frame = 0;
+void interrupted_ITEM_2()
+{
+	if (interrupt_ITEM2_timer < 60)
+	{
+		interrupt_ITEM2_timer++;
+		interrupt_ITEM2_frame += 10;
+	}
+	else if (interrupt_ITEM2_timer >= 60)
+	{
+		interrupt_ITEM2_frame -= 10;
 
+		if (interrupt_ITEM2_frame <= 0)
+		{
+			interrupt_ITEM2_Flag = 0;
+			interrupt_ITEM2_timer = 0;
+		}
+	}
+}
 //무적 키
 static int key = 0;
 
@@ -691,15 +707,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				image10.TransparentBlt(memdc, item_Drop[i].x, item_Drop[i].y, item_Drop[i].w, item_Drop[i].h, item_Drop[i].picX, item_Drop[i].picY, item_Drop[i].picW, item_Drop[i].picH, RGB(0, 255, 255));
 		}
 
-		//방해요소 2
-		if (interrupt_ITEM2_Flag == 1)
+	
+
+		//플레이어
+		if (player.state == 1)
 		{
-			hBrush = CreateSolidBrush(RGB(0, 0, 0));
-			oldBrush = ((HBRUSH)SelectObject(memdc, hBrush));
-			Rectangle(memdc, 0, 0, 500, interrupt_ITEM2_frame);
-			SelectObject(memdc, oldBrush);
-			DeleteObject(hBrush);
+			PLAYER.TransparentBlt(memdc, player.x, player.y, player.w, player.h, player.picX, player.picY, player.picW, player.picH, RGB(255, 255, 255));//플레이어
 		}
+		if (mode_2p)
+		{
+			if (SecondPlayer.state == 1)
+			{
+				SECONDPLAYER.Draw(memdc, SecondPlayer.x, SecondPlayer.y, SecondPlayer.w, SecondPlayer.h, SecondPlayer.picX, SecondPlayer.picY, SecondPlayer.picW, SecondPlayer.picH);//플레이어
+			}
+		}
+
+		//버그
+		for (int i = 0; i < MONSTER; i++)
+		{
+
+			if (bug[i].state == 1)
+			{
+				BUG_image.TransparentBlt(memdc, bug[i].x, bug[i].y, player.w, player.h, player.picX, player.picY, 72, 73, RGB(255, 255, 255));
+			}
+			if (bug[i].impact_num != 9)
+			{
+
+				impact[bug[i].impact_num].Draw(memdc, bug[i].x - 15, bug[i].y - 15, player.w + 15, player.h + 15, bug[i].impact_time * 172, 0, 172, 160);
+				bug[i].impact_time++;
+				if (bug[i].impact_time == 4)
+				{
+					bug[i].impact_time = 0;
+					bug[i].impact_num = 9;
+				}
+			}
+		}
+
 		//아이템 그리기
 		for (int i = 0; i < 10; ++i)
 		{
@@ -746,38 +789,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 		}
 
-		//플레이어
-		if (player.state == 1)
+		//방해요소 2
+		if (interrupt_ITEM2_Flag == 1)
 		{
-			PLAYER.TransparentBlt(memdc, player.x, player.y, player.w, player.h, player.picX, player.picY, player.picW, player.picH, RGB(255, 255, 255));//플레이어
-		}
-		if (mode_2p)
-		{
-			if (SecondPlayer.state == 1)
-			{
-				SECONDPLAYER.Draw(memdc, SecondPlayer.x, SecondPlayer.y, SecondPlayer.w, SecondPlayer.h, SecondPlayer.picX, SecondPlayer.picY, SecondPlayer.picW, SecondPlayer.picH);//플레이어
-			}
-		}
-
-		//버그
-		for (int i = 0; i < MONSTER; i++)
-		{
-
-			if (bug[i].state == 1)
-			{
-				BUG_image.TransparentBlt(memdc, bug[i].x, bug[i].y, player.w, player.h, player.picX, player.picY, 72, 73, RGB(255, 255, 255));
-			}
-			if (bug[i].impact_num != 9)
-			{
-
-				impact[bug[i].impact_num].Draw(memdc, bug[i].x - 15, bug[i].y - 15, player.w + 15, player.h + 15, bug[i].impact_time * 172, 0, 172, 160);
-				bug[i].impact_time++;
-				if (bug[i].impact_time == 4)
-				{
-					bug[i].impact_time = 0;
-					bug[i].impact_num = 9;
-				}
-			}
+			hBrush = CreateSolidBrush(RGB(0, 0, 0));
+			oldBrush = ((HBRUSH)SelectObject(memdc, hBrush));
+			Rectangle(memdc, 0, 0, 500, interrupt_ITEM2_frame);
+			SelectObject(memdc, oldBrush);
+			DeleteObject(hBrush);
 		}
 
 		//점수
@@ -1369,7 +1388,11 @@ void gameTimerFunc()
 							ITEM10(SecondPlayer, item_10[i], i);
 					}
 				}
-
+			}
+			//방해요소 2 플래그 on 
+			if (interrupt_ITEM2_Flag == 1)
+			{
+				interrupted_ITEM_2();
 			}
 		}
 	}
