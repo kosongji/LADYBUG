@@ -1,27 +1,29 @@
-#include <windows.h>  
-#include <TCHAR.H>
-#include <time.h>
-#include <math.h>
-#include <iostream>
-#include <atlimage.h>
 
-// sound
-#include <conio.h>
-#include <fmod.h>
+#include "inc.h"
+using namespace std;
 
-// class
-#include "CBug.h"
-#include "CPlayer.h"
-#include "CItem.h"
+// 송수신
+#define SERVERPORT 9000
+#define BUFSIZE    512
+
+// 소켓 통신 스레드 함수
+DWORD WINAPI ServerMain(LPVOID arg);
+DWORD WINAPI ProcessClient(LPVOID arg);
+
+// 오류 출력 함수
+void err_quit(char *msg);
+void err_display(char *msg);
+
+
+/// <summary>
+/// FMOD System INIT fucntion
+/// </summary>
 
 #define ITEM_TYPE 8
 FMOD_SYSTEM *g_System;
 FMOD_SOUND *g_Sound[8];
 FMOD_CHANNEL *g_Channel[8];
 
-/// <summary>
-/// FMOD System INIT fucntion
-/// </summary>
 
 void Init()
 {
@@ -48,12 +50,6 @@ void Release()
 	FMOD_System_Close(g_System);
 	FMOD_System_Release(g_System);
 }
-
-#define CONSOLE 1
-#define MONSTER 500
-#define DEBUG 1
-
-using namespace std;
 
 
 Player::Player()
@@ -88,7 +84,8 @@ Item::~Item()
 
 //디바이스 컨테스트 얻기
 HINSTANCE g_hInst;
-LPCTSTR lpszClass = L"Window Class Name";
+LPCTSTR lpszClass = "Window Class Name";
+// HANDLEmEvent=CreateEvent(NULL,false,true,NULL); 이벤트 동기화
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
@@ -98,6 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	MSG Message;
 	WNDCLASSEX WndClass;
 	g_hInst = hInstance;
+	//WaitformultipleObjects(2,mevent,TRUE,INFINITE); 충돌판정전 대기
 	WndClass.cbSize = sizeof(WndClass);
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
 	WndClass.lpfnWndProc = (WNDPROC)WndProc;
@@ -118,58 +116,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	//	freopen("CONOUT$", "wt", stdout);
 	//}
 
-	hWnd = CreateWindow(lpszClass, L"레이디 버그", WS_OVERLAPPEDWINDOW | WS_SYSMENU | WS_THICKFRAME, 0, 0, 500, 800, NULL, (HMENU)NULL, hInstance, NULL);
+	hWnd = CreateWindow(lpszClass, "레이디 버그", WS_OVERLAPPEDWINDOW | WS_SYSMENU | WS_THICKFRAME, 0, 0, 500, 800, NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
+
+	// 소켓 통신 스레드 생성
+	CreateThread(NULL, 0, ServerMain, NULL, 0, NULL);
+
 	while (GetMessage(&Message, 0, 0, 0))
 	{
 		TranslateMessage(&Message);
 		DispatchMessage(&Message);
 	}
+
+	// CloseHandle(mevent); 이벤트 제거
 	return Message.wParam;
 }
 
-/*
-typedef struct Player {
-
-	float x;
-	float y;
-	int w;
-	int h;
-
-	int picX;
-	int picY;
-	int picW;
-	int picH;
-
-	int y_move;
-	int x_move;
-
-	//int count = 0;
-	int state = 0;
-
-	int collisionWithWho = 0;
-};
-*/
-/*
-static struct BUG
-{
-	float x;
-	int y;
-	int y_move;
-	float x_move;
-	int w;
-	int h;
-
-	int impact_num = 9;
-	int impact_time = 0;
-
-	int state = 0;
-
-}bug[MONSTER];
-*/
-
-HINSTANCE hInst;
 
 static FMOD_BOOL IsPlaying;
 static float volume = 0.5f;
@@ -464,12 +427,12 @@ void interrupted_ITEM_2()
 //무적 키
 static int key = 0;
 
+//플레이어 + 버그 충돌
 void playerCollisionCheck(Player &player)
 {
 	if (key != 1)
 	{
 
-		//플레이어 + 버그 충돌
 		for (int i = 0; i < MONSTER; ++i)
 		{
 			if (bug[i].state != 0)
@@ -1073,7 +1036,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			SetBkMode(memdc, TRANSPARENT);
 			myFont = CreateFont(40, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, TEXT("고딕"));
 			oldFont = (HFONT)SelectObject(memdc, myFont);
-			wsprintf(str, L"%d  ", score);
+			wsprintf(str, "%d  ", score);
 			TextOut(memdc, 200, 385, str, lstrlen(str));
 			SelectObject(memdc, oldFont);
 			DeleteObject(myFont);
@@ -1084,11 +1047,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			SetBkMode(memdc, TRANSPARENT);
 			myFont = CreateFont(30, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, TEXT("고딕"));
 			oldFont = (HFONT)SelectObject(memdc, myFont);
-			wsprintf(str, L"SCORE : %d  ", score);
+			wsprintf(str, "SCORE : %d  ", score);
 			TextOut(memdc, 10, 10, str, lstrlen(str));
 			if (key == 1)
 			{
-				wsprintf(str, L"무적 ");
+				wsprintf(str, "무적 ");
 				TextOut(memdc, 400, 10, str, lstrlen(str));
 			}
 			SelectObject(memdc, oldFont);
@@ -1101,7 +1064,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			SetBkMode(memdc, TRANSPARENT);
 			myFont = CreateFont(80, 00, 0, 0, 500, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, TEXT("고딕"));
 			oldFont = (HFONT)SelectObject(memdc, myFont);
-			wsprintf(str, L"PAUSE  ", score);
+			wsprintf(str, "PAUSE  ", score);
 			TextOut(memdc, 110, 200, str, lstrlen(str));
 			SelectObject(memdc, oldFont);
 			DeleteObject(myFont);
@@ -1134,12 +1097,135 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 }
 
 
+// 소켓 함수 오류 출력 후 종료
+void err_quit(char *msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	MessageBox(NULL, (LPCTSTR)lpMsgBuf, msg, MB_ICONERROR);
+	LocalFree(lpMsgBuf);
+	exit(1);
+}
 
+// 소켓 함수 오류 출력
+void err_display(char *msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	printf("[%s] %s", msg, (char *)lpMsgBuf);
+	LocalFree(lpMsgBuf);
+}
+// TCP 서버 시작 부분
+DWORD WINAPI ServerMain(LPVOID arg)
+{
+	int retval;
 
+	// 윈속 초기화
+	WSADATA wsa;
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+		return 1;
 
+	// socket()
+	SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (listen_sock == INVALID_SOCKET) err_quit("socket()");
 
+	// bind()
+	SOCKADDR_IN serveraddr;
+	ZeroMemory(&serveraddr, sizeof(serveraddr));
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	serveraddr.sin_port = htons(SERVERPORT);
+	retval = bind(listen_sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
+	if (retval == SOCKET_ERROR) err_quit("bind()");
 
+	// listen()
+	retval = listen(listen_sock, SOMAXCONN);
+	if (retval == SOCKET_ERROR) err_quit("listen()");
 
+	// 데이터 통신에 사용할 변수
+	SOCKET client_sock;
+	SOCKADDR_IN clientaddr;
+	int addrlen;
+	HANDLE hThread;
+
+	while (1) {
+		// accept()
+		addrlen = sizeof(clientaddr);
+		client_sock = accept(listen_sock, (SOCKADDR *)&clientaddr, &addrlen);
+		if (client_sock == INVALID_SOCKET) {
+			err_display("accept()");
+			break;
+		}
+
+		// 접속한 클라이언트 정보 출력
+		printf("\r\n[TCP 서버] 클라이언트 접속: IP 주소=%s, 포트 번호=%d\r\n",
+			inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+
+		// 스레드 생성
+		hThread = CreateThread(NULL, 0, ProcessClient,
+			(LPVOID)client_sock, 0, NULL);
+		if (hThread == NULL) { closesocket(client_sock); }
+		else { CloseHandle(hThread); }
+	}
+
+	// closesocket()
+	closesocket(listen_sock);
+
+	// 윈속 종료
+	WSACleanup();
+	return 0;
+}
+// 클라이언트와 데이터 통신
+DWORD WINAPI ProcessClient(LPVOID arg)
+{
+	SOCKET client_sock = (SOCKET)arg;
+	int retval;
+	SOCKADDR_IN clientaddr;
+	int addrlen;
+	char buf[BUFSIZE + 1];
+
+	// 클라이언트 정보 얻기
+	addrlen = sizeof(clientaddr);
+	getpeername(client_sock, (SOCKADDR *)&clientaddr, &addrlen);
+
+	while (1) {
+		// 데이터 받기
+		retval = recv(client_sock, buf, BUFSIZE, 0);
+		if (retval == SOCKET_ERROR) {
+			err_display("recv()");
+			break;
+		}
+		else if (retval == 0)
+			break;
+
+		// 받은 데이터 출력
+		buf[retval] = '\0';
+		printf("[TCP/%s:%d] %s\r\n", inet_ntoa(clientaddr.sin_addr),
+			ntohs(clientaddr.sin_port), buf);
+
+		// 데이터 보내기
+		retval = send(client_sock, buf, retval, 0);
+		if (retval == SOCKET_ERROR) {
+			err_display("send()");
+			break;
+		}
+	}
+
+	// closesocket()
+	closesocket(client_sock);
+	printf("[TCP 서버] 클라이언트 종료: IP 주소=%s, 포트 번호=%d\r\n",
+		inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+
+	return 0;
+}
 
 
 void gameValueInit()
@@ -1203,7 +1289,8 @@ void gameValueInit()
 	my = 700;
 	score = 0;
 
-	for (int i = 0; i < MONSTER; i++)//버그 좌표 초기화
+	//버그 좌표 초기화
+	for (int i = 0; i < MONSTER; i++)
 	{
 
 		bug[i].x = -100;
