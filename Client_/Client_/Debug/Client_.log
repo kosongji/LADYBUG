@@ -1,0 +1,5 @@
+﻿  소스.cpp
+c:\users\jmj62\documents\github\ngp_ladybug\client_\client_\소스.cpp(1): warning C4081: 'newline'이(가) 있어야 하는데 ';'이(가) 있습니다.
+c:\users\jmj62\documents\github\ngp_ladybug\client_\client_\소스.cpp(82): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1830): note: 'inet_addr' 선언을 참조하십시오.
+  Client_.vcxproj -> C:\Users\jmj62\Documents\GitHub\NGP_LADYBUG\Client_\Debug\Client_.exe
