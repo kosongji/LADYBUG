@@ -1,0 +1,7 @@
+Move 구조체를 이용하는 player, item의 x,y좌표
+Move 구조체를 이용하는 player, item의 state (0일때 안그려짐,죽음/ 1일때 그려짐)
+Move 구조체를 이용하는 player, item의 collisionWithWho (아이템을 1p가 먹었는지 2p가 먹었는지)
+BUG 구조체를 이용하는 bug의 x,y 좌표
+BUG 구조체를 이용하는 bug의 state (0일때 안그려짐,죽음/ 1일때 그려짐)
+
+

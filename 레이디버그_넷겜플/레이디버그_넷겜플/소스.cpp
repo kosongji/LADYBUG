@@ -116,8 +116,8 @@ typedef struct Move {
 static struct BUG
 {
 	float x;
-	int y;
-	int y_move;
+	float y;
+	float y_move;
 	float x_move;
 	int w;
 	int h;
