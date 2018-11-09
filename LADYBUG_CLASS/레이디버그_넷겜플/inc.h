@@ -15,10 +15,6 @@
 #include <conio.h>
 #include <fmod.h>
 
-// class
-#include "CBug.h"
-#include "CPlayer.h"
-#include "CItem.h"
 
 
 #define CONSOLE 1
