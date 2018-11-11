@@ -1,0 +1,4 @@
+﻿  NetworkManager.cpp
+c:\users\차지환\documents\github2\ngp_ladybug\charge\charge\networkmanager.cpp(34): warning C4838: 'u_long'에서 'UCHAR'(으)로의 변환에는 축소 변환이 필요합니다.
+c:\users\차지환\documents\github2\ngp_ladybug\charge\charge\networkmanager.cpp(34): warning C4244: '초기화 중': 'u_long'에서 'UCHAR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Charge.vcxproj -> C:\Users\차지환\Documents\GitHub2\NGP_LADYBUG\Charge\x64\Debug\Charge.exe
