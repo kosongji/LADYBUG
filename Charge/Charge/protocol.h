@@ -1,12 +1,20 @@
 #pragma once
+<<<<<<< HEAD
 #define MY_PORT 8888
+=======
+#define PORT 8888;
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 
 enum SC_PACKET
 {
 	SC_ID_PUT,
 	SC_GAME_INIT_INFO,
 	SC_GAME_START,
+<<<<<<< HEAD
 	SC_MOVE_OBJ,
+=======
+	SC_MOVE,
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 	SC_USE_ITEM,
 	SC_DEAD,
 	SC_GAME_END,
@@ -23,7 +31,11 @@ enum CS_PACKET
 };
 
 
+<<<<<<< HEAD
 #pragma pack(push, 1)
+=======
+#pragma pack(push, 1
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 
 struct BUG_OBJ_POS
 {
@@ -78,7 +90,11 @@ struct SC_GAME_START_PACKET
 	}
 };
 
+<<<<<<< HEAD
 // ¼öÁ¤Áß
+=======
+
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 struct SC_MOVE_PACKET
 {
 	unsigned short length;
@@ -89,11 +105,15 @@ struct SC_MOVE_PACKET
 	PLAYER_OBJ_POS pos2;
 	BUG_OBJ_POS bug_pos[100];
 	ITEM_OBJ_POS item_pos[5];
+<<<<<<< HEAD
 	SC_MOVE_PACKET()
 		: type(SC_MOVE_OBJ)
 	{
 
 	}
+=======
+
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 
 };
 struct SC_USE_ITEM_PACKET

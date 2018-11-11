@@ -15,6 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -25,6 +26,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+=======
+    <ClCompile Include="Charge.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,6 +42,7 @@
     <ClInclude Include="SceneManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="NetworkManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -47,5 +55,7 @@
     <ClInclude Include="Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+=======
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
   </ItemGroup>
 </Project>

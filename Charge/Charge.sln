@@ -5,8 +5,11 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Charge", "Charge\Charge.vcxproj", "{409A130B-72A6-4BC2-9943-B4A7279FD959}"
 EndProject
+<<<<<<< HEAD
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChargeClient", "ChargeClient\ChargeClient.vcxproj", "{E5B62240-53E1-44BE-A244-8678218BFD77}"
 EndProject
+=======
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,6 +26,7 @@ Global
 		{409A130B-72A6-4BC2-9943-B4A7279FD959}.Release|x64.Build.0 = Release|x64
 		{409A130B-72A6-4BC2-9943-B4A7279FD959}.Release|x86.ActiveCfg = Release|Win32
 		{409A130B-72A6-4BC2-9943-B4A7279FD959}.Release|x86.Build.0 = Release|Win32
+<<<<<<< HEAD
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Debug|x64.ActiveCfg = Debug|x64
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Debug|x64.Build.0 = Debug|x64
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Debug|x86.ActiveCfg = Debug|Win32
@@ -31,6 +35,8 @@ Global
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Release|x64.Build.0 = Release|x64
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Release|x86.ActiveCfg = Release|Win32
 		{E5B62240-53E1-44BE-A244-8678218BFD77}.Release|x86.Build.0 = Release|Win32
+=======
+>>>>>>> 23dc539c8d5379fe96a08dd6e5ee2ced40b8aeeb
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
