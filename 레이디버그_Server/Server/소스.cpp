@@ -94,8 +94,6 @@ DWORD WINAPI ProcessClient(LPVOID arg)
 	{
 		int received;
 		received = send(client_sock, (char*)&clientAccessCount, sizeof(int), 0);
-
-		
 	}
 	// closesocket()
 	closesocket(client_sock);

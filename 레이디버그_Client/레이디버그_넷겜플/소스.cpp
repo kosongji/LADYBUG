@@ -50,7 +50,7 @@ void Release()
 }
 
 #define CONSOLE 1
-#define MONSTER 100
+#define MONSTER 50
 #define DEBUG 1
 
 using namespace std;
