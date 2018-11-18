@@ -27,6 +27,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="..\protocol\common.cpp">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkManager.h">
@@ -35,17 +38,20 @@
     <ClInclude Include="Player.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="protocol.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="..\protocol\common.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="const.h">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="..\protocol\const.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\protocol\protocol.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\protocol\Singleton.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

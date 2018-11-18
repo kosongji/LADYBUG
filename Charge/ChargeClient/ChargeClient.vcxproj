@@ -143,17 +143,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\protocol\common.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="const.h" />
+    <ClInclude Include="..\protocol\common.h" />
+    <ClInclude Include="..\protocol\const.h" />
+    <ClInclude Include="..\protocol\protocol.h" />
+    <ClInclude Include="..\protocol\Singleton.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="protocol.h" />
     <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

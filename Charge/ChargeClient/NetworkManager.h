@@ -1,26 +1,33 @@
 #pragma once
 #include <vector>
 
-class NetworkManager
+
+
+namespace CS
 {
-public:
-	NetworkManager();
-	~NetworkManager();
+	class NetworkManager
+	{
+	public:
+		NetworkManager();
+		~NetworkManager();
 
-	bool		Initialize();
-	void		Finalize();
+		bool		Initialize();
+		void		Finalize();
 
+		void		CreateThread();
 
-	void		AddUserCount()	  { InterlockedIncrement( &m_UserCount ); }
-	SOCKET		GetListenSocket() const  { return m_ClientSocket; }
+		void		AddUserCount() { InterlockedIncrement(&m_UserCount); }
+		SOCKET		GetListenSocket() const { return m_ClientSocket; }
 
-	static void		WorkerThread(Session* sessoin);
+		static void		WorkerThread(CS::NetworkManager* p);
 
-private:
-	SOCKET						m_ClientSocket;
-	LONG						m_UserCount;
-	
+	private:
+		std::vector<std::thread>	m_Threads;
 
-
-};
-
+		SOCKET						m_ClientSocket;
+		LONG						m_UserCount;
+		
+		
+		//BUG_OBJ_POS					m_Player[2];
+	};
+}

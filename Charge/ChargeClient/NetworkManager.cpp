@@ -1,19 +1,23 @@
-#include "common.h"
-#include "protocol.h"
+#include "../protocol/common.h"
+#include "../protocol/const.h"
+#include "../protocol/protocol.h"
+#include "../protocol/Singleton.h"
+
+
 #include "NetworkManager.h"
 
 
 
-NetworkManager::NetworkManager()
+CS::NetworkManager::NetworkManager()
 	: m_ClientSocket(INVALID_SOCKET), m_UserCount(0)
 {
 }
 
-NetworkManager::~NetworkManager()
+CS::NetworkManager::~NetworkManager()
 {
 }
 
-bool NetworkManager::Initialize()
+bool CS::NetworkManager::Initialize()
 {
 
 	WSADATA wsa;
@@ -49,61 +53,81 @@ bool NetworkManager::Initialize()
 	printf("\n[TCP 서버] 클라이언트 접속: IP 주소=%s, 포트 번호=%d\n",
 		inet_ntoa(serveraddr.sin_addr), ntohs(serveraddr.sin_port));
 
+
+	// 아디 보내기
+
 	int ret = 0;
-	// send();
-	while (true)
-	{
-		//char buffer[1024]{ 0 };
-		//char buffer2[1024]{ 0 };
-		//
-		//ret = recv(m_ClientSocket, (char*) buffer2, 1024, 0);
-		//printf_s("수신 완료 %s \n", buffer2);
-		//if (SOCKET_ERROR != ret || 0 == ret)
-		//{
-		//	std::cout << WSAGetLastError() << std::endl;
-		//	std::cout << "흠" << std::endl;
-		//}
-		//buffer2[ret] = NULL;
 
-		//printf_s("입력 : ");
-		//std::cin >> buffer;
-		//ret = send(m_ClientSocket, buffer, strlen(buffer), 0);
-		//printf_s("송신 완료 : \n");
-
-
-		//char str[100]{ 0 };
-		//strcpy(str, msg->c_str());
-		//printf_s("%s \n", msg->c_str());
-		
-		//const char* c = msg->c_str();
-
-		printf_s("송신 완료 : \n");
-	}
+	
 
 	return true;
 }
 
-void NetworkManager::Finalize()
+
+void CS::NetworkManager::Finalize()
 {
+	for (auto& th : m_Threads)
+	{
+		th.join();
+	}
+
 	closesocket(m_ClientSocket);
 	WSACleanup();
 }
 
+void CS::NetworkManager::CreateThread()
+{
+	m_Threads.push_back(std::thread{ WorkerThread, this });
+	AddUserCount();
+}
 
 
 
-//void NetworkManager::WorkerThread( Session* session )
+void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
+{
+	NetworkManager* netMgr = pp;
+	char buffer[1024]{ 0 };
+
+
+	while (true)
+	{
+
+		PLAYER_MOVE_PACKET p(SC_MOVE_LEFT, 1.1, 2.2);
+
+		int n2 = send(netMgr->m_ClientSocket, (char*)&p, p.length, 0);
+		if (SOCKET_ERROR == n2)
+		{
+			printf_s("Client send error\n");
+			break;
+		}
+		else
+		{
+			printf_s("Client send\n");
+		}
+
+		int n = recv(netMgr->m_ClientSocket, buffer, 11, 0);
+		if (SOCKET_ERROR == n)
+		{
+			printf_s("Client Recv error\n");
+			break;
+		}
+		else
+		{
+			printf_s("Client recv \n");
+		}
+
+		processPckaetClient(buffer);
+
+		
+
+	}
+
+
+
+}
+
+//void CS::NetworkManager::Rendering(float x, float y)
 //{
-//	char buffer[1024]{ 0 };
-//	// send();
-//	while (true)
-//	{
-//		printf_s( "입력 : " );
-//		scanf_s( buffer );
-//		int ret = send(session->clientSocket, buffer, strlen(buffer), 0);
-//		
-//		recv(session->clientSocket, buffer, ret, 0 );
-//
-//	}
-//
+//	gotoxy(m_Player[0].x, m_Player[1].y);
+//	printf("BUG");
 //}
