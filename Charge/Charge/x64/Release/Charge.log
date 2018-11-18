@@ -1,8 +1,0 @@
-﻿  main.cpp
-c:\users\chargedang\documents\github\ngp_ladybug\charge\charge\main.cpp(6): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
-  코드를 생성하고 있습니다.
-  0 of 160 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  코드를 생성했습니다.
-  Charge.vcxproj -> C:\Users\ChargeDang\Documents\GitHub\NGP_LADYBUG\Charge\x64\Release\Charge.exe
