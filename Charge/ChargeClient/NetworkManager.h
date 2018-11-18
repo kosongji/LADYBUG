@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <queue>
 
 
 
@@ -19,15 +20,18 @@ namespace CS
 		void		AddUserCount() { InterlockedIncrement(&m_UserCount); }
 		SOCKET		GetListenSocket() const { return m_ClientSocket; }
 
-		static void		WorkerThread(CS::NetworkManager* p);
+		static void	WorkerThread(CS::NetworkManager* p);
 
+		void		OnProcessPakcet(char* ); 
+		bool		OnSend();
+		bool		OnRecv();
 	private:
 		std::vector<std::thread>	m_Threads;
 
 		SOCKET						m_ClientSocket;
 		LONG						m_UserCount;
 		
-		
+		std::queue<packet*>			m_MessageQueue;
 		//BUG_OBJ_POS					m_Player[2];
 	};
 }

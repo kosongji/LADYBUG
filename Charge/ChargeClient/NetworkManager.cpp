@@ -54,7 +54,7 @@ bool CS::NetworkManager::Initialize()
 		inet_ntoa(serveraddr.sin_addr), ntohs(serveraddr.sin_port));
 
 
-	// 아디 보내기
+	
 
 	int ret = 0;
 
@@ -88,6 +88,8 @@ void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 	NetworkManager* netMgr = pp;
 	char buffer[1024]{ 0 };
 
+	// iD 받기
+
 
 	while (true)
 	{
@@ -116,7 +118,7 @@ void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 			printf_s("Client recv \n");
 		}
 
-		processPckaetClient(buffer);
+		netMgr->OnProcessPakcet(buffer);
 
 		
 
@@ -125,6 +127,46 @@ void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 
 
 }
+
+void CS::NetworkManager::OnProcessPakcet(char *buf )
+{
+	char buffer[1024]{ 0 };
+	memcpy(buffer, buf, buf[0]);
+	short size = buf[0];
+	char type = buf[2];
+	float x;
+	float y;
+
+	switch (type)
+	{
+
+	case CS_READY:
+		printf_s("CS_READY\n");
+		break;
+	case CS_UNREADY:
+		printf_s("CS_UNREADY\n");
+		break;
+	case CS_INIT_COMPLETE:
+		printf_s("CS_INIT_COMPLETE\n");
+
+		break;
+	case CS_MOVE:
+		printf_s("CS_MOVE\n");
+		memcpy(&x, buf + 3, sizeof(float));
+		memcpy(&y, buf + 7, sizeof(float));
+
+		printf_s("X : %.6f \n", x);
+		printf_s("Y : %.6f \n", y);
+		break;
+	case CS_GAME_DISCONNECT:
+		printf_s("CS_GAME_DISCONNECT\n");
+		break;
+
+	}
+
+
+}
+
 
 //void CS::NetworkManager::Rendering(float x, float y)
 //{

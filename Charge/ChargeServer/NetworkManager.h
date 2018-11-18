@@ -7,20 +7,20 @@ public:
 	NetworkManager();
 	~NetworkManager();
 
-	bool		Initialize();
-	void		Finalize();
+	bool			Initialize();
+	void			Finalize();
 
-	void		AcceptLoop();
-	void		CreateThread( Session* sesion );
+	void			AcceptLoop();
+	void			CreateThread( Session* sesion );
 
 	inline void		AddUserCount()	  { InterlockedIncrement( &m_UserCount ); }
-	inline SOCKET	GetListenSocket() const {
-		return m_ClientSocket
-			;
-	}
+	inline SOCKET	GetListenSocket() const { return m_ClientSocket; }
 
-	static void		WorkerThread(Session* sessoin);
-
+	static void		WorkerThread(Session* sessoin, NetworkManager* );
+	
+	void			OnProcessPakcet(char*);
+	bool			OnSend();
+	bool			OnRecv();
 private:
 	std::vector<std::thread>	m_Threads;
 	SOCKET						m_ClientSocket;
@@ -28,12 +28,10 @@ private:
 
 	// 객체들
 	// 플레이어[2]
+
 	// 버그[100]
 	// 아이템[2]
 	
-
-
-
 
 };
 

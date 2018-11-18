@@ -1,0 +1,14 @@
+﻿  common.cpp
+c:\users\차지환\documents\github2\ngp_ladybug\charge\protocol\common.cpp(29): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
+  main.cpp
+c:\users\차지환\documents\github2\ngp_ladybug\charge\chargeclient\main.cpp(9): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+  NetworkManager.cpp
+c:\users\차지환\documents\github2\ngp_ladybug\charge\chargeclient\networkmanager.cpp(40): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1830): note: 'inet_addr' 선언을 참조하십시오.
+c:\users\차지환\documents\github2\ngp_ladybug\charge\chargeclient\networkmanager.cpp(54): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1848): note: 'inet_ntoa' 선언을 참조하십시오.
+c:\users\차지환\documents\github2\ngp_ladybug\charge\chargeclient\networkmanager.cpp(95): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+  Player.cpp
+  SceneManager.cpp
+  코드를 생성하고 있습니다...
+  ChargeClient.vcxproj -> C:\Users\차지환\Documents\GitHub2\NGP_LADYBUG\Charge\ChargeClient\Debug\ChargeClient.exe

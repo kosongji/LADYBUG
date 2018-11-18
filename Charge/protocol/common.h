@@ -19,8 +19,7 @@
 
 
 int recvn(SOCKET s, char *buf, int len, int flags);
-short processPckaetServer(char*);
-short processPckaetClient(char*);
+
 void gotoxy(int x, int y);
 
 
