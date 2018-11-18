@@ -94,10 +94,12 @@ void NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
 
 	float f = 1.0;
 	
-	// ID 전송
+
 	
 	while (true)
 	{
+		Sleep(33);
+
 		int n2 = recv(session->clientSocket, buffer, sizeof(buffer), 0);
 		if (SOCKET_ERROR == n2)
 		{
@@ -112,7 +114,8 @@ void NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
 
 		pp->OnProcessPakcet(buffer);
 
-		PLAYER_MOVE_PACKET p( SC_MOVE_UP,111.233 +f , 123.432134 +f);
+	
+		SC_PLAYER_MOVE_PACKET p(11 , 1.0 +f , 0.0 +f);
 		int n = send( session->clientSocket, (char*)&p, p.length, 0);
 		if (SOCKET_ERROR == n)
 		{
@@ -141,20 +144,49 @@ void NetworkManager::OnProcessPakcet(char* buf)
 
 	switch (type)
 	{
-
-	case SC_ID_PUT:
-		printf_s("SC_ID_PUT\n");
+	case CS_READY:
+		printf_s("CS_READY\n");
+		break;
+	case CS_UNREADY:
+		printf_s("CS_UNREADY\n");
+		break;
+	case CS_INIT_COMPLETE:
+		printf_s("CS_INIT_COMPLETE\n");
 		break;
 
-	case SC_GAME_INIT_INFO:
-		printf_s("SC_GAME_INIT_INFO\n");
-		break;
+	case CS_MOVE_DOWN:
+		printf_s("SC_MOVE_OBJ\n");
+		printf_s("아래로\n");
 
-	case SC_GAME_START:
-		printf_s("SC_GAME_START\n");
 		break;
+	case CS_MOVE_UP:
+		printf_s("SC_MOVE_OBJ\n");
+		printf_s("위로\n");
 
-	case SC_MOVE_DOWN:
+
+		break;
+	case CS_MOVE_LEFT:
+		printf_s("SC_MOVE_OBJ\n");
+		printf_s("왼\n");
+
+		/*memcpy(&x, buf + 3, sizeof(float));
+		memcpy(&y, buf + 7, sizeof(float));
+
+		printf_s("x : %.6f \n", x);
+		printf_s("y : %.6f \n", y);*/
+
+	case CS_MOVE_RIGHT:
+		printf_s("SC_MOVE_OBJ\n");
+		printf_s("오른\n");
+		
+		//memcpy(&x, buf + 3, sizeof(float));
+		//memcpy(&y, buf + 7, sizeof(float));
+
+		//printf_s("x : %.6f \n", x);
+		//printf_s("y : %.6f \n", y);
+
+		break;
+	case CS_GAME_DISCONNECT:
 		printf_s("SC_MOVE_OBJ\n");
 
 		memcpy(&x, buf + 3, sizeof(float));
@@ -163,44 +195,6 @@ void NetworkManager::OnProcessPakcet(char* buf)
 		printf_s("x : %.6f \n", x);
 		printf_s("y : %.6f \n", y);
 
-	case SC_MOVE_UP:
-		printf_s("SC_MOVE_OBJ\n");
-
-		memcpy(&x, buf + 3, sizeof(float));
-		memcpy(&y, buf + 7, sizeof(float));
-
-		printf_s("x : %.6f \n", x);
-		printf_s("y : %.6f \n", y);
-
-	case SC_MOVE_LEFT:
-		printf_s("SC_MOVE_OBJ\n");
-
-		memcpy(&x, buf + 3, sizeof(float));
-		memcpy(&y, buf + 7, sizeof(float));
-
-		printf_s("x : %.6f \n", x);
-		printf_s("y : %.6f \n", y);
-
-	case SC_MOVE_RIGHT:
-		printf_s("SC_MOVE_OBJ\n");
-
-		memcpy(&x, buf + 3, sizeof(float));
-		memcpy(&y, buf + 7, sizeof(float));
-
-		printf_s("x : %.6f \n", x);
-		printf_s("y : %.6f \n", y);
-
-		break;
-	case SC_USE_ITEM:
-		printf_s("SC_USE_ITEM\n");
-		break;
-
-	case SC_DEAD:
-		printf_s("SC_DEAD\n");
-		break;
-
-	case SC_GAME_END:
-		printf_s("SC_GAME_END\n");
 		break;
 	}
 }

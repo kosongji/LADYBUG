@@ -145,7 +145,9 @@
   <ItemGroup>
     <ClCompile Include="..\protocol\common.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main2.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
@@ -154,6 +156,7 @@
     <ClInclude Include="..\protocol\const.h" />
     <ClInclude Include="..\protocol\protocol.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
   </ItemGroup>

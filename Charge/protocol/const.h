@@ -2,6 +2,9 @@
 #include "common.h"
 
 #define THREAD_MAX_COUNT 2
+#define PLAYER_NUM 2
+#define BUG_NUM 10
+#define ITEM_NUM 5
 
 struct Session
 {
@@ -31,12 +34,17 @@ struct Session
 struct Object
 {
 	float x, y;
+	Object()
+		: x(0.0), y(0.0)
+	{
+	}
 };
 
 struct BUG_OBJ_POS
 {
 	// 어차피 분기 필요 
 	// status 제거
+	// 0,0 죽음
 	Object pos;
 };
 struct ITEM_OBJ_POS

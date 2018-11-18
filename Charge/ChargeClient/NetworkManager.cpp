@@ -5,6 +5,7 @@
 
 
 #include "NetworkManager.h"
+#include <random>
 
 
 
@@ -85,6 +86,10 @@ void CS::NetworkManager::CreateThread()
 
 void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 {
+	std::uniform_int_distribution<> uid(4, 7);
+	std::default_random_engine dre;
+
+
 	NetworkManager* netMgr = pp;
 	char buffer[1024]{ 0 };
 
@@ -93,8 +98,9 @@ void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 
 	while (true)
 	{
+		Sleep(33);
 
-		PLAYER_MOVE_PACKET p(SC_MOVE_LEFT, 1.1, 2.2);
+		CS_MOVE_PACKET p( uid(dre) , netMgr->m_Id);
 
 		int n2 = send(netMgr->m_ClientSocket, (char*)&p, p.length, 0);
 		if (SOCKET_ERROR == n2)
@@ -106,6 +112,7 @@ void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
 		{
 			printf_s("Client send\n");
 		}
+
 
 		int n = recv(netMgr->m_ClientSocket, buffer, 11, 0);
 		if (SOCKET_ERROR == n)
@@ -139,18 +146,19 @@ void CS::NetworkManager::OnProcessPakcet(char *buf )
 
 	switch (type)
 	{
+	case SC_ID_PUT:
+		printf_s("SC_ID_PUT\n");
+		break;
 
-	case CS_READY:
-		printf_s("CS_READY\n");
+	case SC_GAME_INIT_INFO:
+		printf_s("SC_GAME_INIT_INFO\n");
 		break;
-	case CS_UNREADY:
-		printf_s("CS_UNREADY\n");
-		break;
-	case CS_INIT_COMPLETE:
-		printf_s("CS_INIT_COMPLETE\n");
 
+	case SC_GAME_START:
+		printf_s("SC_GAME_START\n");
 		break;
-	case CS_MOVE:
+
+	case SC_MOVE_OBJ:
 		printf_s("CS_MOVE\n");
 		memcpy(&x, buf + 3, sizeof(float));
 		memcpy(&y, buf + 7, sizeof(float));
@@ -158,18 +166,32 @@ void CS::NetworkManager::OnProcessPakcet(char *buf )
 		printf_s("X : %.6f \n", x);
 		printf_s("Y : %.6f \n", y);
 		break;
-	case CS_GAME_DISCONNECT:
-		printf_s("CS_GAME_DISCONNECT\n");
+
+
+	case SC_USE_ITEM:
+		printf_s("SC_USE_ITEM\n");
 		break;
 
+	case SC_DEAD:
+		printf_s("SC_DEAD\n");
+		break;
+
+	case SC_GAME_END:
+		printf_s("SC_GAME_END\n");
+		break;
 	}
 
 
 }
 
+bool CS::NetworkManager::OnSend()
+{
+	return false;
+}
 
-//void CS::NetworkManager::Rendering(float x, float y)
-//{
-//	gotoxy(m_Player[0].x, m_Player[1].y);
-//	printf("BUG");
-//}
+bool CS::NetworkManager::OnRecv()
+{
+	return false;
+}
+
+

@@ -15,14 +15,14 @@ enum SC_PACKET
 
 enum CS_PACKET
 {
-	CS_READY,
-	CS_UNREADY,
-	CS_INIT_COMPLETE,
-	CS_MOVE_UP,
-	CS_MOVE_DOWN,
-	CS_MOVE_LEFT,
-	CS_MOVE_RIGHT,
-	CS_GAME_DISCONNECT
+	CS_READY			=	0,
+	CS_UNREADY			=	1,
+	CS_INIT_COMPLETE	=	2,
+	CS_MOVE_UP			=	4,
+	CS_MOVE_DOWN		=	5,
+	CS_MOVE_LEFT		=	6,
+	CS_MOVE_RIGHT		=	7,
+	CS_GAME_DISCONNECT	=	8
 };
 
 
@@ -41,12 +41,12 @@ struct Header
 
 
 // ¿¹½Ã 
-struct PLAYER_MOVE_PACKET 
+struct SC_PLAYER_MOVE_PACKET 
 	: Header
 {
 	float x, y;
-	PLAYER_MOVE_PACKET(SC_PACKET type ,float x, float y)
-		: Header(type, SC_MOVE_OBJ), x(x), y(y)
+	SC_PLAYER_MOVE_PACKET(unsigned short length,float x, float y)
+		: Header(length, SC_MOVE_OBJ), x(x), y(y)
 	{
 	}
 };
@@ -65,16 +65,33 @@ struct SC_ID_PUT_PACKET
 
 
 struct SC_GAME_INIT_INFO_PACKET
+	: Header
 {
-	unsigned short	length;
-	unsigned char	type;
 	unsigned char	id1;
-	PLAYER_OBJ_POS	pos1;
 	unsigned char	id2;
-	PLAYER_OBJ_POS	pos2;
-	BUG_OBJ_POS		bug_pos[100];
+
+	PLAYER_OBJ_POS	pos[2];
+	BUG_OBJ_POS		bug_pos[10];
 	ITEM_OBJ_POS	item_pos[5];
 
+	SC_GAME_INIT_INFO_PACKET(
+		unsigned char	id1,
+		unsigned char	id2,
+		void* p1,
+		void* p2,
+		void* p3
+	)
+		:Header(
+			5 + sizeof(PLAYER_OBJ_POS) * 2 
+			+ sizeof(PLAYER_OBJ_POS) * 10
+			+ sizeof(ITEM_OBJ_POS) * 5
+			,SC_GAME_INIT_INFO)
+		, id1(id1), id2(id2)
+	{
+		memmove(pos, p1, sizeof(PLAYER_OBJ_POS));
+		memmove(bug_pos, p2, sizeof(BUG_OBJ_POS));
+		memmove(item_pos, p3, sizeof(ITEM_OBJ_POS));
+	}
 };
 
 struct SC_GAME_START_PACKET
@@ -94,16 +111,29 @@ struct SC_MOVE_PACKET
 	: Header
 {
 	unsigned char	id1;
-	PLAYER_OBJ_POS	pos1;
 	unsigned char	id2;
-	PLAYER_OBJ_POS	pos2;
-	
+
+	PLAYER_OBJ_POS	pos[2];
 	BUG_OBJ_POS		bug_pos[10];
 	ITEM_OBJ_POS	item_pos[5];
-	SC_MOVE_PACKET()
-		: Header (143, type)
+
+	SC_MOVE_PACKET(
+		unsigned char	id1,
+		unsigned char	id2,
+		void* p1,
+		void* p2,
+		void* p3
+	)
+		:Header(
+			5 + sizeof(PLAYER_OBJ_POS) * 2
+			+ sizeof(PLAYER_OBJ_POS) * 10
+			+ sizeof(ITEM_OBJ_POS) * 5
+			, SC_GAME_INIT_INFO)
+		, id1(id1), id2(id2)
 	{
-		// Initialize
+		memmove(pos, p1, sizeof(PLAYER_OBJ_POS));
+		memmove(bug_pos, p2, sizeof(BUG_OBJ_POS));
+		memmove(item_pos, p3, sizeof(ITEM_OBJ_POS));
 	}
 };
 
@@ -111,8 +141,8 @@ struct SC_USE_ITEM_PACKET
 	: Header
 {
 	unsigned char	id1;
-	unsigned char	item1;
 	unsigned char	id2;
+	unsigned char	item1;
 	unsigned char	item2;
 
 	SC_USE_ITEM_PACKET( 
@@ -188,7 +218,8 @@ struct CS_MOVE_PACKET
 {
 	unsigned char	id;
 
-	CS_MOVE_PACKET(CS_PACKET type ,unsigned char id)
+	CS_MOVE_PACKET(unsigned char type
+	,unsigned char id)
 		: Header(4, type), id(id)
 	{
 	}

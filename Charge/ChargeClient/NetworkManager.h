@@ -8,6 +8,7 @@ namespace CS
 {
 	class NetworkManager
 	{
+	
 	public:
 		NetworkManager();
 		~NetworkManager();
@@ -25,13 +26,16 @@ namespace CS
 		void		OnProcessPakcet(char* ); 
 		bool		OnSend();
 		bool		OnRecv();
+	
+	
 	private:
 		std::vector<std::thread>	m_Threads;
 
 		SOCKET						m_ClientSocket;
 		LONG						m_UserCount;
+		unsigned short				m_Id;
 		
-		std::queue<packet*>			m_MessageQueue;
+		std::queue<Header*>			m_MessageQueue;
 		//BUG_OBJ_POS					m_Player[2];
 	};
 }
