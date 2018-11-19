@@ -155,6 +155,7 @@
     <ClInclude Include="..\protocol\common.h" />
     <ClInclude Include="..\protocol\const.h" />
     <ClInclude Include="..\protocol\protocol.h" />
+    <ClInclude Include="..\protocol\Singleton.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />

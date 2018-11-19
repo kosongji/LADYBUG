@@ -3,6 +3,8 @@
 
 
 
+namespace CS
+{
 
 	class NetworkManager
 	{
@@ -30,3 +32,7 @@
 		LONG						m_UserCount;
 
 	};
+
+	extern NetworkManager* GNetworkManager;// = new NetworkManager();
+}
+

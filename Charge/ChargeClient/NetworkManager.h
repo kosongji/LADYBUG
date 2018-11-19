@@ -8,7 +8,7 @@ namespace CS
 {
 	class NetworkManager
 	{
-	
+
 	public:
 		NetworkManager();
 		~NetworkManager();
@@ -21,21 +21,23 @@ namespace CS
 		void		AddUserCount() { InterlockedIncrement(&m_UserCount); }
 		SOCKET		GetListenSocket() const { return m_ClientSocket; }
 
-		static void	WorkerThread(CS::NetworkManager* p);
+		static void	WorkerThread(NetworkManager* p);
 
-		void		OnProcessPakcet(char* ); 
+		void		OnProcessPakcet(char*);
 		bool		OnSend();
 		bool		OnRecv();
-	
-	
+
+
 	private:
 		std::vector<std::thread>	m_Threads;
 
 		SOCKET						m_ClientSocket;
 		LONG						m_UserCount;
 		unsigned short				m_Id;
-		
+
 		std::queue<Header*>			m_MessageQueue;
 		//BUG_OBJ_POS					m_Player[2];
 	};
+
+	extern NetworkManager* GNetworkManager;
 }

@@ -3,47 +3,54 @@
 #include "../protocol/protocol.h"
 #include "../protocol/Singleton.h"
 
+#include "ObjectManager.h"
 #include "NetworkManager.h"
 
-//teset
 #include <random>
 
-NetworkManager::NetworkManager()
+namespace CS
+{
+	NetworkManager* GNetworkManager = new NetworkManager();
+}
+
+
+
+CS::NetworkManager::NetworkManager()
 	: m_ClientSocket(INVALID_SOCKET), m_UserCount(0)
 {
 }
 
-NetworkManager::~NetworkManager()
+CS::NetworkManager::~NetworkManager()
 {
 }
 
-bool NetworkManager::Initialize()
+bool CS::NetworkManager::Initialize()
 {
 	WSADATA wsa;
 	if ( 0 != WSAStartup(MAKEWORD(2, 2), &wsa))
 	{
-		printf_s(" ERROR ! NetworkManager::WSAStratup() ");
+		printf_s(" ERROR ! CS::NetworkManager::WSAStratup() ");
 		return false;
 	}
 	
 	m_ClientSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if ( INVALID_SOCKET == m_ClientSocket)
 	{
-		printf_s(" ERROR ! NetworkManager::Initialize() ");
+		printf_s(" ERROR ! CS::NetworkManager::Initialize() ");
 		return false;
 	}
 
 	SOCKADDR_IN addr{ AF_INET, htons(MY_PORT), htonl(INADDR_ANY) };
 	if ( SOCKET_ERROR == ::bind(m_ClientSocket, (SOCKADDR*)&addr, sizeof(addr)) )
 	{
-		printf_s(" ERROR ! NetworkManager::Initialize() ");
+		printf_s(" ERROR ! CS::NetworkManager::Initialize() ");
 		return false;
 	}
 
 	return true;
 }
 
-void NetworkManager::Finalize()
+void CS::NetworkManager::Finalize()
 {
 	for (auto& th : m_Threads)
 	{
@@ -54,7 +61,7 @@ void NetworkManager::Finalize()
 	WSACleanup();
 }
 
-void NetworkManager::AcceptLoop()
+void CS::NetworkManager::AcceptLoop()
 {
 
 	if (SOCKET_ERROR == listen(m_ClientSocket, SOMAXCONN))
@@ -72,20 +79,19 @@ void NetworkManager::AcceptLoop()
 		Session* sess = new Session( con, addr, m_UserCount);
 		AddUserCount();
 		CreateThread( sess );
-
+		
 	}
 
 
 
 }
 
-void NetworkManager::CreateThread( Session* sesion )
+void CS::NetworkManager::CreateThread( Session* sesion )
 {
 	m_Threads.push_back(std::thread{ WorkerThread, sesion, this });
-	AddUserCount();
 }
 
-void NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
+void CS::NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
 {
 	NetworkManager* pp = ppp;
 	std::uniform_int_distribution<> uid;
@@ -95,7 +101,19 @@ void NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
 	float f = 1.0;
 	
 
-	
+SC_ID_PUT_PACKET packet(pp->m_UserCount);
+int n2 = send(session->clientSocket, (char*)&packet, sizeof(SC_ID_PUT_PACKET), 0);
+
+if (SOCKET_ERROR == n2)
+{
+
+	printf_s("Client send error %d\n", WSAGetLastError());
+}
+else
+{
+	printf_s("ID : Client send\n");
+}
+
 	while (true)
 	{
 		Sleep(33);
@@ -133,7 +151,7 @@ void NetworkManager::WorkerThread( Session* session, NetworkManager* ppp )
 
 }
 
-void NetworkManager::OnProcessPakcet(char* buf)
+void CS::NetworkManager::OnProcessPakcet(char* buf)
 {
 	char buffer[1024]{ 0 };
 	memcpy(buffer, buf, buf[0]);
@@ -197,4 +215,8 @@ void NetworkManager::OnProcessPakcet(char* buf)
 
 		break;
 	}
+
+
+
 }
+

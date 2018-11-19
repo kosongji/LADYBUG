@@ -25,4 +25,8 @@ namespace CS
 		BUG_OBJ_POS*		m_Bugs;
 	};
 
+
+	extern ObjectManager* GObjectManager;
 }
+
+

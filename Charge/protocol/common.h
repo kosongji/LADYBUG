@@ -23,4 +23,3 @@ int recvn(SOCKET s, char *buf, int len, int flags);
 void gotoxy(int x, int y);
 
 
-

@@ -1,6 +1,4 @@
 //#include "Player.h"
-////#include "Singleton.h"
-//#include "SceneManager.h"
 //
 //
 //

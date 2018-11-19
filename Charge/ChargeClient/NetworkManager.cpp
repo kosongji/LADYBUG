@@ -3,35 +3,37 @@
 #include "../protocol/protocol.h"
 #include "../protocol/Singleton.h"
 
-
+#include "ObjectManager.h"
 #include "NetworkManager.h"
 #include <random>
 
+namespace CS
+{
+	NetworkManager*  GNetworkManager = nullptr;
+}
 
-
-CS::NetworkManager::NetworkManager()
+ CS::NetworkManager::NetworkManager()
 	: m_ClientSocket(INVALID_SOCKET), m_UserCount(0)
 {
 }
 
-CS::NetworkManager::~NetworkManager()
+ CS::NetworkManager::~NetworkManager()
 {
 }
 
-bool CS::NetworkManager::Initialize()
+bool  CS::NetworkManager::Initialize()
 {
-
 	WSADATA wsa;
 	if ( 0 != WSAStartup(MAKEWORD(2, 2), &wsa))
 	{
-		printf_s(" ERROR ! NetworkManager::WSAStratup() ");
+		printf_s(" ERROR ! CS::NetworkManager::WSAStratup() ");
 		return false;
 	}
 	
 	m_ClientSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if ( INVALID_SOCKET == m_ClientSocket )
 	{
-		printf_s(" ERROR ! NetworkManager::Initialize() ");
+		printf_s(" ERROR ! CS::NetworkManager::Initialize() ");
 		return false;
 	}
 
@@ -47,12 +49,17 @@ bool CS::NetworkManager::Initialize()
 	retval = connect(m_ClientSocket, (SOCKADDR *)&serveraddr, conntectlen);
 	if (retval == SOCKET_ERROR)
 	{
-		printf_s(" ERROR ! NetworkManager::Initialize() ");
+		printf_s(" ERROR ! CS::NetworkManager::Initialize() ");
 	}
+
+
+
 
 	printf_s(" 접속.... \n");
 	printf("\n[TCP 서버] 클라이언트 접속: IP 주소=%s, 포트 번호=%d\n",
 		inet_ntoa(serveraddr.sin_addr), ntohs(serveraddr.sin_port));
+
+
 
 
 	
@@ -65,7 +72,7 @@ bool CS::NetworkManager::Initialize()
 }
 
 
-void CS::NetworkManager::Finalize()
+void  CS::NetworkManager::Finalize()
 {
 	for (auto& th : m_Threads)
 	{
@@ -76,7 +83,7 @@ void CS::NetworkManager::Finalize()
 	WSACleanup();
 }
 
-void CS::NetworkManager::CreateThread()
+void  CS::NetworkManager::CreateThread()
 {
 	m_Threads.push_back(std::thread{ WorkerThread, this });
 	AddUserCount();
@@ -84,58 +91,57 @@ void CS::NetworkManager::CreateThread()
 
 
 
-void CS::NetworkManager::WorkerThread(CS::NetworkManager* pp)
+void  CS::NetworkManager::WorkerThread( NetworkManager* pp)
 {
+
+	char buffer[1024]{ 0 };
+
+	int n = recv(pp->m_ClientSocket, buffer, 4, 0);
+	pp->m_Id = buffer[3];
+
+
 	std::uniform_int_distribution<> uid(4, 7);
 	std::default_random_engine dre;
 
 
-	NetworkManager* netMgr = pp;
-	char buffer[1024]{ 0 };
-
-	// iD 받기
-
-
+	
 	while (true)
 	{
 		Sleep(33);
+		CS_MOVE_PACKET p( uid(dre) , pp->m_Id);
 
-		CS_MOVE_PACKET p( uid(dre) , netMgr->m_Id);
-
-		int n2 = send(netMgr->m_ClientSocket, (char*)&p, p.length, 0);
+		int n2 = send(pp->m_ClientSocket, (char*)&p, p.length, 0);
 		if (SOCKET_ERROR == n2)
 		{
-			printf_s("Client send error\n");
+
+			printf_s("Client send error %d\n", WSAGetLastError());
 			break;
 		}
 		else
 		{
-			printf_s("Client send\n");
+			printf_s("ID : %d Client send\n", pp->m_Id);
 		}
 
 
-		int n = recv(netMgr->m_ClientSocket, buffer, 11, 0);
+		int n = recv(pp->m_ClientSocket, buffer, 11, 0);
 		if (SOCKET_ERROR == n)
 		{
+			printf_s("%d\n", WSAGetLastError());
 			printf_s("Client Recv error\n");
 			break;
 		}
 		else
 		{
+			printf_s("%d\n", WSAGetLastError());
 			printf_s("Client recv \n");
 		}
 
-		netMgr->OnProcessPakcet(buffer);
-
-		
-
+		pp->OnProcessPakcet(buffer);
 	}
-
-
 
 }
 
-void CS::NetworkManager::OnProcessPakcet(char *buf )
+void  CS::NetworkManager::OnProcessPakcet(char *buf )
 {
 	char buffer[1024]{ 0 };
 	memcpy(buffer, buf, buf[0]);
@@ -159,7 +165,9 @@ void CS::NetworkManager::OnProcessPakcet(char *buf )
 		break;
 
 	case SC_MOVE_OBJ:
+		// g객체 
 		printf_s("CS_MOVE\n");
+
 		memcpy(&x, buf + 3, sizeof(float));
 		memcpy(&y, buf + 7, sizeof(float));
 
@@ -184,12 +192,12 @@ void CS::NetworkManager::OnProcessPakcet(char *buf )
 
 }
 
-bool CS::NetworkManager::OnSend()
+bool  CS::NetworkManager::OnSend()
 {
 	return false;
 }
 
-bool CS::NetworkManager::OnRecv()
+bool  CS::NetworkManager::OnRecv()
 {
 	return false;
 }

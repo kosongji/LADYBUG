@@ -2,9 +2,13 @@
 #include "../protocol/const.h"
 #include "../protocol/protocol.h"
 
+#include "NetworkManager.h"
 #include "ObjectManager.h"
 
-
+namespace CS
+{
+	ObjectManager* GObjectManager = nullptr;
+}
 
 CS::ObjectManager::ObjectManager()
 {

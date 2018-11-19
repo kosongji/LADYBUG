@@ -58,7 +58,7 @@ struct SC_ID_PUT_PACKET
 	unsigned char id;
 
 	SC_ID_PUT_PACKET(unsigned char id)
-		: Header(5,SC_ID_PUT), id(id)
+		: Header(4,SC_ID_PUT), id(id)
 	{
 	}
 };
